@@ -14,6 +14,11 @@ void on_two_player(k4x::Engine& engine) {
 int main(int argc, char* argv[]) {
     
     k4x::Engine engine(argc, argv);
+
+    engine.window().set_title("Sonic 1 4X");
+    engine.title().set_background_image("s14x/resources/title/background.png"); //Give the title screen a background
+    engine.chapter_manager().switch_to_chapter("title");
+
 /*
     //Configure the title screen
     engine.title().add_demo("s14x/demos/demo_1.ogv"); //Add a list of demo moves that cycle after a timeout
@@ -21,7 +26,7 @@ int main(int argc, char* argv[]) {
     engine.title().set_time_to_demo(30); //Set the time the title screen shows before displaying a demo
     engine.title().set_fade_time(1); //Set the fade time when time_to_demo runs out
     engine.title().set_background_music("s14x/music/intro.ogg"); //Set the background music
-    engine.title().set_background_image("s14x/backgrounds/title.png"); //Give the title screen a background
+    engine.title().set_background_image("s14x/backgrounds/title.png");
     engine.title().add_animated_sprite("s14x/title/main_sprite.png", k4x::POSITION_CENTERED);
 
     //On menu selection, go to the save_selection screen

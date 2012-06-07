@@ -16,3 +16,4 @@ k4x/idle_task_manager.cpp
 k4x/timed_task_manager.h
 k4x/timed_task_manager.cpp
 k4x/k4x.h
+k4x/chapters/title_chapter.cpp

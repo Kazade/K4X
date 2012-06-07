@@ -4,12 +4,16 @@
 #include "level_manager.h"
 #include "chapters/title_chapter.h"
 
+#include "kglt/kazbase/logging/logging.h"
+
 namespace k4x {
 
 Engine::Engine(int argc, char* argv[]):
     is_running_(true),
     chapter_manager_(new ChapterManager(*this)),
     level_manager_(new LevelManager()) {
+
+    logging::get_logger("/")->add_handler(logging::Handler::ptr(new logging::StdIOHandler));
 
     window_.reset(new kglt::Window());
 
@@ -42,6 +46,10 @@ ChapterManager& Engine::chapter_manager() {
 LevelManager& Engine::level_manager() {
     assert(level_manager_);
     return *level_manager_;
+}
+
+TitleChapter& Engine::title() {
+    return dynamic_cast<TitleChapter&>(chapter_manager().chapter("title"));
 }
 
 }

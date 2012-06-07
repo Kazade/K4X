@@ -16,6 +16,8 @@ ChapterManager::ChapterManager(Engine& engine):
 void ChapterManager::register_chapter(const std::string& name, std::tr1::shared_ptr<Chapter> chapter) {
     assert(chapters_.find(name) == chapters_.end());
 
+    chapter->set_manager(this);
+
     chapters_[name] = chapter;
     if(current_chapter_name_.empty()) {
         current_chapter_name_ = name;
