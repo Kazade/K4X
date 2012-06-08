@@ -2,8 +2,6 @@
 #include "../engine.h"
 #include "../chapter_manager.h"
 
-#include <kglt/thread.h>
-
 namespace k4x {
 
 TitleChapter::TitleChapter():

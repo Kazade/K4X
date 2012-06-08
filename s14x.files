@@ -1,12 +1,11 @@
-/home/lukeb/GitHub/K4X/k4x/chapter_manager.h
-/home/lukeb/GitHub/K4X/k4x/CMakeLists.txt
-/home/lukeb/GitHub/K4X/k4x/engine.cpp
-/home/lukeb/GitHub/K4X/k4x/engine.h
-/home/lukeb/GitHub/K4X/k4x/level_manager.h
-/home/lukeb/GitHub/K4X/s14x/CMakeLists.txt
-/home/lukeb/GitHub/K4X/s14x/main.cpp
-/home/lukeb/GitHub/K4X/CMakeLists.txt
-/home/lukeb/GitHub/K4X/get_and_build_deps.sh
+k4x/chapter_manager.h
+k4x/CMakeLists.txt
+k4x/engine.cpp
+k4x/engine.h
+k4x/level_manager.h
+s14x/main.cpp
+CMakeLists.txt
+get_and_build_deps.sh
 k4x/chapter.h
 k4x/chapter_manager.cpp
 k4x/chapter.cpp
@@ -17,3 +16,5 @@ k4x/timed_task_manager.h
 k4x/timed_task_manager.cpp
 k4x/k4x.h
 k4x/chapters/title_chapter.cpp
+s14x/CMakeLists.txt
+s14x/main.cpp

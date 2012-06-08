@@ -1,10 +1,11 @@
 #include <utility>
-
+#include <tr1/functional>
+#include "kglt/kazbase/logging/logging.h"
 #include "idle_task_manager.h"
 
 namespace k4x {
 
-static uint32_t connection_counter = 0;
+static ConnectionID connection_counter = 0;
 
 IdleTaskManager::IdleTaskManager() {
 
@@ -16,13 +17,31 @@ ConnectionID IdleTaskManager::add(std::tr1::function<bool ()> callback) {
     return new_id;
 }
 
+ConnectionID IdleTaskManager::add_once(std::tr1::function<void ()> callback) {
+    ConnectionID new_id = ++connection_counter;
+    signals_once_.insert(std::make_pair(new_id, callback));
+    return new_id;
+}
+
 void IdleTaskManager::execute() {
-    /*for(std::pair<ConnectionID, std::tr1::function<bool> > p: signals_.copy()) {
-        bool result = p.second();
+    std::map<ConnectionID, std::tr1::function<bool ()> > signals = signals_;
+    
+    std::map<ConnectionID, std::tr1::function<bool ()> >::iterator it = signals.begin();
+    
+    for(; it != signals.end(); ++it) {
+        L_DEBUG("Executing idle task");
+        bool result = (*it).second();
         if(!result) {
-            signals_.erase(p.first);
+            L_DEBUG("Idle task returned false. Removing.");
+            signals_.erase((*it).first);
         }
-    }*/
+    }
+    
+    for(std::pair<ConnectionID, std::tr1::function<void ()> > p: signals_once_) {
+        L_DEBUG("Executing one-off idle task");
+        p.second();
+    }
+    signals_once_.clear();
 }
 
 }

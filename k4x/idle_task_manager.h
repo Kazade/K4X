@@ -1,5 +1,5 @@
-#ifndef IDLE_TASK_MANAGER_H
-#define IDLE_TASK_MANAGER_H
+#ifndef K4X_IDLE_TASK_MANAGER_H
+#define K4X_IDLE_TASK_MANAGER_H
 
 #include <cstdint>
 #include <sigc++/sigc++.h>
@@ -15,12 +15,15 @@ public:
     IdleTaskManager();
 
     ConnectionID add(std::tr1::function<bool ()> callback);
+    ConnectionID add_once(std::tr1::function<void ()> callback);
+    
     void remove(ConnectionID connection);
 
     void execute();
 
 private:
     std::map<ConnectionID, std::tr1::function<bool ()> > signals_;
+    std::map<ConnectionID, std::tr1::function<void ()> > signals_once_;
 
 };
 
