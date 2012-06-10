@@ -18,3 +18,5 @@ k4x/k4x.h
 k4x/chapters/title_chapter.cpp
 s14x/CMakeLists.txt
 s14x/main.cpp
+k4x/chapters/boot_chapter.h
+k4x/chapters/boot_chapter.cpp

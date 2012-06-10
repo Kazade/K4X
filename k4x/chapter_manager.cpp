@@ -2,15 +2,19 @@
 #include <thread>
 #include <sigc++/sigc++.h>
 
+#include "kglt/kazbase/logging/logging.h"
 #include "chapter.h"
 #include "chapter_manager.h"
 #include "engine.h"
+
+#include "chapters/boot_chapter.h"
 
 namespace k4x {
 
 ChapterManager::ChapterManager(Engine& engine):
     engine_(engine) {
 
+    register_chapter("boot", std::tr1::shared_ptr<Chapter>(new BootChapter()));
 }
 
 void ChapterManager::register_chapter(const std::string& name, std::tr1::shared_ptr<Chapter> chapter) {
@@ -30,6 +34,7 @@ Chapter& ChapterManager::chapter(const std::string& name) {
 }
 
 void ChapterManager::switch_to_chapter(const std::string& name) {
+    L_DEBUG("Switching to chapter: " + name);
     Chapter& next = chapter(name);
     Chapter& current = current_chapter();
 
@@ -48,6 +53,8 @@ void ChapterManager::switch_to_chapter(const std::string& name) {
 
 bool ChapterManager::switch_when_ready(const std::string& next) {
     if(prepare_start_future_.valid() && prepare_stop_future_.valid()) {
+        L_DEBUG("Prepare threads finished, switching to chapter now: " + next);
+
         prepare_start_future_.get();
         prepare_stop_future_.get(); //Apparently we should call this anyway, so exceptions can be propagated..
 

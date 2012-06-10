@@ -25,12 +25,10 @@ public:
 
 private:
     std::string background_image_path_;
-    kglt::SpriteID background_sprite_id_;
-
     std::vector<std::string> demo_videos_;
 
     void on_prepare_start();
-    void on_frame_start();
+    void on_start();
 };
 
 }
