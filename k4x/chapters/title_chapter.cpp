@@ -11,11 +11,30 @@ TitleChapter::TitleChapter():
 
 }
 
+void TitleChapter::add_sprite(const std::string& sprite_image, SpritePosition position) {
+    kglt::Window& window = manager().engine().window();
+    kglt::SpriteID sprite_id = window.scene().new_sprite();
+    kglt::Sprite& sprite = window.scene().sprite(sprite_id);
+    window.loader_for(sprite_image, "LOADER_HINT_SPRITE")->into(sprite);
+
+    sprite.move_to(0, 0, -1.0);
+    sprite.set_animation_frames(0, 0);
+    sprite.set_animation_fps(0);
+    sprite.set_render_dimensions(256*4, 256*4);
+
+    switch(position) {
+        case SPRITE_POSITION_CENTRED:
+        break;
+    }
+}
+
 void TitleChapter::set_background_image(const std::string& background_image) {
     background_image_path_ = background_image;
 }
 
 void TitleChapter::enable_background_scrolling(bool value) {
+    if(background_image_path_.empty()) return;
+
     background_scrolling_enabled_ = value;
     if(!value && scroll_connection_) {
         manager().engine().idle().remove(scroll_connection_);
@@ -72,6 +91,11 @@ void TitleChapter::on_stop() {
 
 bool TitleChapter::scroll_background() {
     kglt::Window& window = manager().engine().window();
+
+    if(!window.scene().background().layer_count()) {
+        return false;
+    }
+
     window.scene().background().layer(0).scroll_x(0.1 * window.delta_time());
     return true;
 }

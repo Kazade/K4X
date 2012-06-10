@@ -11,6 +11,10 @@
 
 namespace k4x {
 
+enum SpritePosition {
+    SPRITE_POSITION_CENTRED
+};
+
 class TitleChapter : public Chapter {
 public:
     typedef std::tr1::shared_ptr<TitleChapter> ptr;
@@ -23,6 +27,7 @@ public:
 
     void add_demo(const std::string& demo_video);
     void set_background_image(const std::string& background_image);
+    void add_sprite(const std::string& sprite, SpritePosition position);
 
     void enable_background_scrolling(bool value=true);
 
@@ -30,6 +35,7 @@ public:
 private:
     std::string background_image_path_;
     std::vector<std::string> demo_videos_;
+    std::vector<kglt::SpriteID> sprites_;
 
     void on_prepare_start();
     void on_start();
