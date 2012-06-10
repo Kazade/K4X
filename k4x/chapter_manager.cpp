@@ -14,7 +14,7 @@ namespace k4x {
 ChapterManager::ChapterManager(Engine& engine):
     engine_(engine) {
 
-    register_chapter("boot", std::tr1::shared_ptr<Chapter>(new BootChapter()));
+    register_chapter("boot", std::tr1::shared_ptr<Chapter>(new BootChapter()));    
 }
 
 void ChapterManager::register_chapter(const std::string& name, std::tr1::shared_ptr<Chapter> chapter) {
@@ -36,23 +36,24 @@ Chapter& ChapterManager::chapter(const std::string& name) {
 void ChapterManager::switch_to_chapter(const std::string& name) {
     L_DEBUG("Switching to chapter: " + name);
     Chapter& next = chapter(name);
-    Chapter& current = current_chapter();
+
+    if(!current_chapter_name_.empty()) {
+        Chapter& current = current_chapter();
+        prepare_stop_future_ = std::async(std::launch::async, sigc::mem_fun(&current, &Chapter::prepare_stop));
+        //Fade the existing chapter to black while it shuts down and while the next one loads
+        //Show the loading icon if we get to full black and we haven't finished loading the next scene
+        current.fade_to_black(1.0, /*show_loading=*/true);
+    }
 
     //Start threads for shutting down this chapter, and booting up the next one
-
     prepare_start_future_ = std::async(std::launch::async, sigc::mem_fun(&next, &Chapter::prepare_start));
-    prepare_stop_future_ = std::async(std::launch::async, sigc::mem_fun(&current, &Chapter::prepare_stop));
 
     //Wait for the threads to complete before switching
     engine().idle().add(sigc::bind(sigc::mem_fun(this, &ChapterManager::switch_when_ready), name));
-
-    //Fade the existing chapter to black while it shuts down and while the next one loads
-    //Show the loading icon if we get to full black and we haven't finished loading the next scene
-    current.fade_to_black(1.0, /*show_loading=*/true);
 }
 
 bool ChapterManager::switch_when_ready(const std::string& next) {
-    if(prepare_start_future_.valid() && prepare_stop_future_.valid()) {
+    if(prepare_start_future_.valid() && (current_chapter_name_.empty() || prepare_stop_future_.valid())) {
         L_DEBUG("Prepare threads finished, switching to chapter now: " + next);
 
         prepare_start_future_.get();

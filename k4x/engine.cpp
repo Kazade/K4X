@@ -21,6 +21,8 @@ Engine::Engine(int argc, char* argv[]):
     chapter_manager().register_chapter("title", k4x::TitleChapter::create());
     //chapter_manager().register_chapter("save_selection", k4x::SaveSelectionChapter::create());
     //chapter_manager().register_chapter("in_game", k4x::InGameChapter::create());
+
+    chapter_manager().switch_to_chapter("boot");
 }
 
 int32_t Engine::run() {

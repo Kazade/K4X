@@ -2,6 +2,8 @@
 #include "../engine.h"
 #include "../chapter_manager.h"
 
+#include "kglt/kazbase/logging/logging.h"
+
 namespace k4x {
 
 TitleChapter::TitleChapter():
@@ -44,6 +46,8 @@ void TitleChapter::on_prepare_start() {
 }
 
 void TitleChapter::on_start() {
+    L_DEBUG("Starting title chapter");
+
     kglt::Window& window = manager().engine().window();
     window.scene().pass().viewport().configure(kglt::VIEWPORT_TYPE_BLACKBAR_16_BY_9);
 

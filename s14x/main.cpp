@@ -17,7 +17,6 @@ int main(int argc, char* argv[]) {
 
     engine.window().set_title("Sonic 1 4X");
     engine.title().set_background_image("s14x/resources/title/background.png"); //Give the title screen a background
-    engine.chapter_manager().switch_to_chapter("title");
 
 /*
     //Configure the title screen
