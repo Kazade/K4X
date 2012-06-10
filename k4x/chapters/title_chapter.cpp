@@ -4,12 +4,24 @@
 
 namespace k4x {
 
-TitleChapter::TitleChapter() {
+TitleChapter::TitleChapter():
+    scroll_connection_(0) {
 
 }
 
 void TitleChapter::set_background_image(const std::string& background_image) {
     background_image_path_ = background_image;
+}
+
+void TitleChapter::enable_background_scrolling(bool value) {
+    background_scrolling_enabled_ = value;
+    if(!value && scroll_connection_) {
+        manager().engine().idle().remove(scroll_connection_);
+        scroll_connection_ = 0;
+    }
+    if(value && !scroll_connection_) {
+        scroll_connection_ = manager().engine().idle().add(sigc::mem_fun(this, &TitleChapter::scroll_background));
+    }
 }
 
 void TitleChapter::on_prepare_start() {
@@ -45,12 +57,13 @@ void TitleChapter::on_start() {
     */
 
     unfade();    
-
-    scroll_connection_ = manager().engine().idle().add(sigc::mem_fun(this, &TitleChapter::scroll_background));
+    enable_background_scrolling();
 }
 
 void TitleChapter::on_stop() {
-    manager().engine().idle().remove(scroll_connection_);
+    if(scroll_connection_) {
+        manager().engine().idle().remove(scroll_connection_);
+    }
 }
 
 bool TitleChapter::scroll_background() {

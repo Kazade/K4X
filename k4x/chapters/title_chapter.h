@@ -24,6 +24,8 @@ public:
     void add_demo(const std::string& demo_video);
     void set_background_image(const std::string& background_image);
 
+    void enable_background_scrolling(bool value=true);
+
     bool scroll_background();
 private:
     std::string background_image_path_;
@@ -34,6 +36,8 @@ private:
     void on_stop();
 
     ConnectionID scroll_connection_;
+
+    bool background_scrolling_enabled_;
 };
 
 }
