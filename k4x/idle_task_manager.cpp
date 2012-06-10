@@ -1,6 +1,7 @@
 #include <utility>
 #include <tr1/functional>
 #include "kglt/kazbase/logging/logging.h"
+#include "kglt/kazbase/list_utils.h"
 #include "idle_task_manager.h"
 
 namespace k4x {
@@ -21,6 +22,12 @@ ConnectionID IdleTaskManager::add_once(std::tr1::function<void ()> callback) {
     ConnectionID new_id = ++connection_counter;
     signals_once_.insert(std::make_pair(new_id, callback));
     return new_id;
+}
+
+void IdleTaskManager::remove(ConnectionID connection) {
+    if(container::contains(signals_, connection)) {
+        signals_.erase(connection);
+    }
 }
 
 void IdleTaskManager::execute() {

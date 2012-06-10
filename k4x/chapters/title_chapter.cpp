@@ -44,7 +44,19 @@ void TitleChapter::on_start() {
     track.play();
     */
 
-    unfade();
+    unfade();    
+
+    scroll_connection_ = manager().engine().idle().add(sigc::mem_fun(this, &TitleChapter::scroll_background));
+}
+
+void TitleChapter::on_stop() {
+    manager().engine().idle().remove(scroll_connection_);
+}
+
+bool TitleChapter::scroll_background() {
+    kglt::Window& window = manager().engine().window();
+    window.scene().background().layer(0).scroll_x(0.1 * window.delta_time());
+    return true;
 }
 
 void TitleChapter::add_demo(const std::string &demo_video) {
