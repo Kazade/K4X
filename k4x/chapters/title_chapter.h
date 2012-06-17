@@ -26,7 +26,7 @@ public:
     }
 
     void add_demo(const std::string& demo_video);
-    void set_background_image(const std::string& background_image);
+    void add_background_image(const std::string& background_image);
     void add_sprite(const std::string& sprite, SpritePosition position);
 
     void enable_background_scrolling(bool value=true);

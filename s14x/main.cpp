@@ -15,8 +15,15 @@ int main(int argc, char* argv[]) {
     
     k4x::Engine engine(argc, argv);
 
+    kglt::FontID fid = engine.window().scene().new_font();
+    kglt::Font& f = engine.window().scene().font(fid);
+    f.initialize("s14x/resources/centbold.ttf", 12);
+    engine.window().scene().ui().set_default_font_id(fid);
+
     engine.window().set_title("Sonic 1 4X");
-    engine.title().set_background_image("s14x/resources/title/background.png"); //Give the title screen a background
+    engine.title().add_background_image("s14x/resources/title/background_0.png"); //Give the title screen a background
+    engine.title().add_background_image("s14x/resources/title/background_1.png");
+    engine.title().add_background_image("s14x/resources/title/background_2.png");
     engine.title().add_sprite("s14x/resources/title/halo.png", k4x::SPRITE_POSITION_CENTRED);
 
 /*

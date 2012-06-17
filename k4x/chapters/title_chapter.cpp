@@ -2,6 +2,7 @@
 #include "../engine.h"
 #include "../chapter_manager.h"
 
+#include "kglt/ui/shortcuts.h"
 #include "kglt/kazbase/logging/logging.h"
 
 namespace k4x {
@@ -28,12 +29,15 @@ void TitleChapter::add_sprite(const std::string& sprite_image, SpritePosition po
     }
 }
 
-void TitleChapter::set_background_image(const std::string& background_image) {
-    background_image_path_ = background_image;
+void TitleChapter::add_background_image(const std::string& background_image) {
+    L_DEBUG("Loading background image from: " + background_image);
+    kglt::Scene& scene = manager().engine().window().scene();
+    scene.background().add_layer(background_image);
+    L_DEBUG("Background loaded");
 }
 
 void TitleChapter::enable_background_scrolling(bool value) {
-    if(background_image_path_.empty()) return;
+    //if(background_image_path_.empty()) return;
 
     background_scrolling_enabled_ = value;
     if(!value && scroll_connection_) {
@@ -49,13 +53,13 @@ void TitleChapter::on_prepare_start() {
     kglt::Window& window = manager().engine().window();
     kglt::Scene& scene = window.scene();
 
-    if(!background_image_path_.empty()) {
-        L_DEBUG("Loading background image from: " + background_image_path_);
-        scene.background().add_layer(background_image_path_);
-        L_DEBUG("Background loaded");
-    }
+    kglt::ui::Label& label = kglt::ui::return_new_label(scene);
+    label.set_position(0.75, 0.025);
+    label.background().set_visible(false);
+    label.border().set_visible(false);
+    label.set_text(u8"\u00a9 SEGA 1991");
 
-    /*
+    /*            
     if(!title_music_path_.empty()) {
         kalt::System& system = manager().engine().sound();
         title_music_ = system.new_track();
@@ -96,7 +100,9 @@ bool TitleChapter::scroll_background() {
         return false;
     }
 
-    window.scene().background().layer(0).scroll_x(0.1 * window.delta_time());
+    window.scene().background().layer(0).scroll_x(0.05 * window.delta_time());
+    window.scene().background().layer(1).scroll_x(0.06 * window.delta_time());
+    window.scene().background().layer(2).scroll_x(0.07 * window.delta_time());
     return true;
 }
 
